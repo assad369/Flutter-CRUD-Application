@@ -15,29 +15,6 @@ class ProductListScreen extends StatefulWidget {
 
 class _ProductListScreenState extends State<ProductListScreen> {
   List<Product> productList = [];
-  @override
-/*  void initState() {
-    // TODO: implement initState
-    super.initState();
-    fetchData();
-    setState(() {});
-  }
-
-  Future<void> fetchData() async {
-    try {
-      final data = await ApiServices.getProductFromApi();
-      setState(() {
-        productList = data;
-      });
-    } catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error fetching products: $error'),
-        ),
-      );
-      print('Error fetching products: $error');
-    }
-  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +51,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
               return Center(
                 child: Text('Error: ${snapshot.error}'),
               );
-            } else if (snapshot.hasData) {
+            } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
               return ListView.separated(
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
