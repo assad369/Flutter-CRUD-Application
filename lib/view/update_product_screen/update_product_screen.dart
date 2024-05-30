@@ -21,27 +21,16 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
   final TextEditingController _imageTEController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  late Map<String, dynamic> inputData;
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _nameTEController.text = widget.product.productName;
-    _productCodeTEController.text = widget.product.productCode;
-    _quantityTEController.text = widget.product.quantity;
-    _unitPriceTEController.text = widget.product.unitPrice;
-    _totalPriceTEController.text = widget.product.totalPrice;
-    _imageTEController.text = widget.product.image;
-
-    inputData = {
-      "Img": widget.product.image,
-      "ProductCode": widget.product.productCode,
-      "ProductName": widget.product.productName,
-      "Qty": widget.product.quantity,
-      "TotalPrice": widget.product.totalPrice,
-      "UnitPrice": widget.product.unitPrice,
-    };
+    _nameTEController.text = widget.product.productName.toString();
+    _productCodeTEController.text = widget.product.productCode.toString();
+    _quantityTEController.text = widget.product.quantity.toString();
+    _unitPriceTEController.text = widget.product.unitPrice.toString();
+    _totalPriceTEController.text = widget.product.totalPrice.toString();
+    _imageTEController.text = widget.product.image.toString();
   }
 
   @override
@@ -153,11 +142,18 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                 const SizedBox(height: 32),
                 ElevatedButton(
                   onPressed: () {
+                    Map<String, dynamic> inputData = {
+                      "Img": _imageTEController.text,
+                      "ProductCode": _productCodeTEController.text,
+                      "ProductName": _nameTEController.text,
+                      "Qty": _quantityTEController.text,
+                      "TotalPrice": _totalPriceTEController.text,
+                      "UnitPrice": _unitPriceTEController.text,
+                    };
                     if (_formKey.currentState!.validate()) {
                       ApiServices.updateProduct(
                           inputData: inputData, productId: widget.product.id);
                     }
-                    print('product id is:  ${widget.product.id}');
                   },
                   child: const Text('Update product'),
                 ),
