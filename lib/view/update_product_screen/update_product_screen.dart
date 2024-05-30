@@ -152,7 +152,9 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                     };
                     if (_formKey.currentState!.validate()) {
                       ApiServices.updateProduct(
-                          inputData: inputData, productId: widget.product.id);
+                        inputData: inputData,
+                        productId: widget.product.id,
+                      );
                     }
                   },
                   child: const Text('Update product'),
