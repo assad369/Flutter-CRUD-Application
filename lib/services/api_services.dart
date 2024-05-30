@@ -7,6 +7,8 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
 class ApiServices {
+  ///Get Product
+
   static Future<List<Product>> getProductFromApi() async {
     String url = 'https://crud.teamrabbil.com/api/v1/ReadProduct';
     Response response = await http.get(Uri.parse(url));
@@ -15,16 +17,12 @@ class ApiServices {
 
     if (response.statusCode == 200) {
       return jsonData.map((index) => Product.fromJson(index)).toList();
-
-      /* for (Map<String, dynamic> index in jsonData) {
-        productList.add(Product.fromJson(index));
-      }*/
-      // productList.addAll(jsonData);
     } else {
       return [];
     }
   }
 
+  ///Post Product
   static Future addProduct(postProductData) async {
     const String addProductUrl =
         'https://crud.teamrabbil.com/api/v1/CreateProduct';
@@ -48,6 +46,7 @@ class ApiServices {
     }
   }
 
+  ///Update product
   static Future<void> updateProduct({
     required Map<String, dynamic> inputData,
     required String productId,
@@ -87,6 +86,34 @@ class ApiServices {
         backgroundColor: Colors.red,
         gravity: ToastGravity.SNACKBAR,
       );
+    }
+  }
+
+  ///Delete Product
+  static Future<void> deleteProduct(String productId) async {
+    String deleteProductUrl =
+        'https://crud.teamrabbil.com/api/v1/DeleteProduct/$productId';
+    Uri uri = Uri.parse(deleteProductUrl);
+
+    Response response = await http.get(uri);
+
+    if (response.statusCode == 200) {
+      Fluttertoast.showToast(
+          msg: 'Product deleted Successfully',
+          backgroundColor: Colors.green,
+          gravity: ToastGravity.SNACKBAR);
+
+      print('Product deleted Succesfully');
+      Fluttertoast.showToast(
+          msg: 'Product deleted Successfully',
+          backgroundColor: Colors.green,
+          gravity: ToastGravity.SNACKBAR);
+    } else {
+      print('Failed to delete product');
+      Fluttertoast.showToast(
+          msg: 'Product deleted Successfully',
+          backgroundColor: Colors.red,
+          gravity: ToastGravity.SNACKBAR);
     }
   }
 }
