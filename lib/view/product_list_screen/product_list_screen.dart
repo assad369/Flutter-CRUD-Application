@@ -3,6 +3,9 @@ import 'package:assignment13/services/api_services.dart';
 import 'package:assignment13/view/add_product_screen/add_product_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 
 import '../update_product_screen/update_product_screen.dart';
 
@@ -111,7 +114,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                     ),
                     IconButton(
                       onPressed: () {
-                        return showDeleteConfirmation();
+                        return showDeleteConfirmation(productList[index].id);
                       },
                       icon: const Icon(Icons.delete_sharp),
                       color: Colors.red,
@@ -144,7 +147,37 @@ class _ProductListScreenState extends State<ProductListScreen> {
     }
   }
 
-  void showDeleteConfirmation() {
+  Future<void> deleteProduct(String productId) async {
+    String deleteProductUrl =
+        'https://crud.teamrabbil.com/api/v1/DeleteProduct/$productId';
+    Uri uri = Uri.parse(deleteProductUrl);
+
+    Response response = await http.get(uri);
+
+    if (response.statusCode == 200) {
+      Fluttertoast.showToast(
+          msg: 'Product deleted Successfully',
+          backgroundColor: Colors.green,
+          gravity: ToastGravity.SNACKBAR);
+      Navigator.pop(context);
+
+      _refreshProduct();
+
+      print('Product deleted Succesfully');
+      Fluttertoast.showToast(
+          msg: 'Product deleted Successfully',
+          backgroundColor: Colors.green,
+          gravity: ToastGravity.SNACKBAR);
+    } else {
+      print('Failed to delete product');
+      Fluttertoast.showToast(
+          msg: 'Product deleted Successfully',
+          backgroundColor: Colors.red,
+          gravity: ToastGravity.SNACKBAR);
+    }
+  }
+
+  void showDeleteConfirmation(productId) {
     showDialog(
         context: context,
         builder: (context) {
@@ -159,7 +192,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                   child: const Text('Cancel')),
               TextButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    deleteProduct(productId);
                   },
                   child: const Text('Yes, delete!')),
             ],
